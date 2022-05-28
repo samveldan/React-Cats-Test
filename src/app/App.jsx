@@ -7,6 +7,7 @@ import Header from '../header/Header';
 import Favorites from '../pages/Favorites/Favorites';
 import Home from '../pages/Home/Home';
 import './app.scss';
+import NotFound from '../pages/404/NotFound';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/favorites" element={<Favorites />}></Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </main>
   );

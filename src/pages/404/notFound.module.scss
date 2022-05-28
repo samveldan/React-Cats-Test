@@ -1,0 +1,20 @@
+.notFound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: fit-content;
+    margin: 100px auto;
+    flex-direction: column;
+    a {
+        width: 100%;
+    }
+}
+
+.btn {
+    background-color: #2196F3;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+}
