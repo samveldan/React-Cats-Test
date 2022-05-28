@@ -1,0 +1,28 @@
+.item {
+    transition: .3s all;
+    position: relative;
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0px 6px 5px rgba(0, 0, 0, 0.24), 0px 9px 18px rgba(0, 0, 0, 0.18);
+        .heart {
+            .active {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.heart {
+    position: absolute;
+    bottom: 20px;
+    right: 15px;
+    transition: .3s all;
+    cursor: pointer;
+    img {
+        display: none;
+        &.active {
+            display: block;
+            opacity: 0;
+        }
+    }
+}
