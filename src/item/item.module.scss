@@ -8,6 +8,9 @@
             .active {
                 opacity: 1;
             }
+            &:hover {
+                background-image: url("../assets/images/full-heart.svg");
+            }
         }
     }
 }
