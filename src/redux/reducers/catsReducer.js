@@ -5,7 +5,8 @@ const cats = createSlice({
     initialState : {
         cats : [],
         favorites : [],
-        currentPage : "home"
+        currentPage : "home",
+        isLoading : true
     },
     reducers : {
         setCats(state, action) {
@@ -24,9 +25,12 @@ const cats = createSlice({
             state.favorites = state.favorites.filter(i => {
                 if(i.id !== action.payload.id) return i;
             })
+        },
+        setIsLoading(state, action) {
+            state.isLoading = action.payload;
         }
     }
 })
 
-export const {setCats, setFavorites, setPage, addToFavorite, removeFromFavorite} = cats.actions;
+export const {setCats, setFavorites, setPage, addToFavorite, removeFromFavorite, setIsLoading} = cats.actions;
 export default cats.reducer;
