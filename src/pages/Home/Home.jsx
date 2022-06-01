@@ -13,6 +13,7 @@ const Home = () => {
   return (
     <>
       <Content isHome={true} />
+      <span className="catLoading">... загружаем еще котиков ...</span>
     </>
   );
 };

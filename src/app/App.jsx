@@ -80,7 +80,6 @@ const App = () => {
         <Route path="/favorites" element={<Favorites />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
-      <span className="catLoading">... загружаем еще котиков ...</span>
     </main>
   );
 };
