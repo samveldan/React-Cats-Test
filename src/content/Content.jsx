@@ -11,10 +11,12 @@ const Content = ({ isHome }) => {
         <div className={styles.wrapper}>
           {isHome
             ? cats.map((cat, index) => {
-                return <Item key={index} {...cat} isHome={true} />;
+                return <Item key={index} {...cat} isHome={true} wholeItem={cat} items={cats} />;
               })
             : favorites.map((cat, index) => {
-                return <Item key={index} {...cat} isHome={false} />;
+                return (
+                  <Item key={index} {...cat} isHome={false} wholeItem={cat} items={favorites} />
+                );
               })}
         </div>
       </div>

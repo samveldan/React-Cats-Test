@@ -1,12 +1,24 @@
+import React from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFavorites } from '../redux/reducers/catsReducer';
+import { addToFavorite, setFavorites, removeFromFavorite } from '../redux/reducers/catsReducer';
 import styles from './item.module.scss';
 
-const Item = ({ url, id, isHome, image, image_id }) => {
-  const { favorites } = useSelector((state) => state);
-  const isFavorite = favorites.find((i) => i.image_id == id || image_id);
+const Item = ({ wholeItem, items }) => {
+  const { favorites, currentPage } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const [isFavorite, setIsFavorite] = React.useState(false);
+
+  React.useEffect(() => {
+    favorites.forEach((fav) => {
+      if (
+        (typeof wholeItem.id == 'string' ? wholeItem.id : wholeItem.image_id) ==
+        (typeof fav.id == 'string' ? fav.id : fav.image_id)
+      ) {
+        setIsFavorite(true);
+      }
+    });
+  }, [favorites, currentPage]);
 
   const changeFavs = () => {
     axios({
@@ -19,16 +31,8 @@ const Item = ({ url, id, isHome, image, image_id }) => {
   };
 
   const addToFav = (e) => {
-    const block = e.target.closest(`.${styles.item}`);
-
-    const btn = e.target.closest(`.${styles.heart}`),
-      emptyHeart = btn.querySelector('.empty'),
-      fullHeart = btn.querySelector('.full');
-
-    if (emptyHeart.classList.contains(styles.active)) {
-      emptyHeart.classList.remove(styles.active);
-      fullHeart.classList.add(styles.active);
-
+    if (!isFavorite) {
+      dispatch(addToFavorite(wholeItem));
       axios({
         method: 'POST',
         url: 'https://api.thecatapi.com/v1/favourites/',
@@ -36,7 +40,7 @@ const Item = ({ url, id, isHome, image, image_id }) => {
           'x-api-key': 'e8222a91-b519-4510-80ea-acc718a86f1c',
         },
         data: {
-          image_id: id,
+          image_id: wholeItem.id,
           sub_id: '123',
         },
       })
@@ -45,10 +49,7 @@ const Item = ({ url, id, isHome, image, image_id }) => {
           console.log(error);
         });
     } else {
-      emptyHeart.classList.add(styles.active);
-      fullHeart.classList.remove(styles.active);
-      // !isHome && block.remove();
-
+      dispatch(removeFromFavorite(wholeItem));
       axios({
         method: 'GET',
         url: `https://api.thecatapi.com/v1/favourites`,
@@ -58,7 +59,10 @@ const Item = ({ url, id, isHome, image, image_id }) => {
       })
         .then((data) => {
           data.data.forEach((item) => {
-            if (item.id == id) {
+            if (
+              item.image_id == (typeof wholeItem.id == 'string' ? wholeItem.id : wholeItem.image_id)
+            ) {
+              setIsFavorite(false);
               axios({
                 method: 'DELETE',
                 url: `https://api.thecatapi.com/v1/favourites/${item.id}`,
@@ -73,16 +77,17 @@ const Item = ({ url, id, isHome, image, image_id }) => {
           console.log(error);
         });
     }
+    setIsFavorite((prev) => !prev);
   };
 
   return (
     <div className={styles.item}>
-      <img src={isHome ? url : image.url} alt="" />
+      <img src={wholeItem.url || wholeItem.image.url} alt="" />
       <button className={styles.heart} onClick={addToFav}>
         <img
           src={require('../assets/images/empty-heart.svg').default}
           alt=""
-          className={isFavorite ? 'empty' : styles.active + ' empty'}
+          className={!isFavorite ? styles.active + ' empty' : 'empty'}
         />
         <img
           src={require('../assets/images/full-heart.svg').default}
